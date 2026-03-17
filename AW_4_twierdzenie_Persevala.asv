@@ -6,17 +6,16 @@
 E_czas = Tp * sum(x.^2);
 
 % wzor (14)
-PHI_xx = 1 / (N*Tp) * ( abs(Tp * fft(x)) ).^2
+PHI_xx = 1 / (N*Tp) * ( abs(fft(x)) ).^2
 
 % energia (15b)
-E_widmo = sum( PHI_xx);
+E_widmo = sum(PHI_xx);
 
 % energia (15a)
 E_N = Tp * sum(x.^2 );
 
 fprintf('Energia czasu: %.6f\n', E_czas); 
 fprintf('Energia Parseval (całe widmo): %.6f\n', E_widmo);
-fprintf('Energia Parseval (metoda druga): %.6f\n', E_N);
 fprintf('Błąd względny: %.2e\n', abs(E_czas - E_widmo)/E_czas); 
 
 % PERIODOGRAM:
@@ -28,3 +27,10 @@ title('Periodogram PSD \Phi_{xx}(f) - tylko dodatnie częstotliwości');
 xlabel('Częstotliwość f [Hz]'); ylabel('\Phi_{xx}(f)');
 grid on; xlim([0 50]);
 
+figure;
+f = (0:N/2-1) * (1/Tp)/N;  % f [Hz]
+subplot(1,2,1)
+stem(f, PHI_xx(1:N/2));
+title('Periodogram PSD \Phi_{xx}(f) - tylko dodatnie częstotliwości'); 
+xlabel('Częstotliwość f [Hz]'); ylabel('\Phi_{xx}(f)');
+grid on; xlim([0 50]);
