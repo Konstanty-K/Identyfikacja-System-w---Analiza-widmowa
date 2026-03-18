@@ -26,7 +26,7 @@ v_DFT = Tp * fft(v);
 % w_p should be length 2*Mw+1 to match rxx indexing (which is 2*Mw+1)
 %w_p = ones(1, 2*Mw+1);  % prostokątne okno o wartości 1
 w_p = zeros(2*Mw+1, 1);
-for i = 1 : N
+for i = 1 : 2*Mw+1
     %tau_i = i - Mw;
     %if abs(tau_i) <= Mw
     w_p(i) = 1;  % długość 2*Mw+1
@@ -50,7 +50,7 @@ PHI_s_vv_p = Tp * sum(w_p .* corr_v .* v_DFT);
 
 % Hanning window (okno Hanninga) of length 2*Mw+1, 
 w_h = zeros(N, 1);
-for i = 1 : N
+for i = 1 : 2*Mw+1
     %tau_i = i - Mw;
     %if abs(tau_i) <= Mw
     w_h(i) = 0.5 * (1 + cos(pi*i/Mw)); %tau_i/Mw));  % długość 2*Mw+1
