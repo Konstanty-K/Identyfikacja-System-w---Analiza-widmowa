@@ -1,6 +1,6 @@
 %% PSD szumu kolorowego v(nTp)
 Tp=0.001; N=2000; n=0:N-1;
-sigma=0.8; e=sigma*randn(1,N);
+sigma=2; e=sigma*randn(1,N);
 
 H = tf([0.1],[1 -0.9],Tp);
 v = lsim(H, e, n*Tp)';

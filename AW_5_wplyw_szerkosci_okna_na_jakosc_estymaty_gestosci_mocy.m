@@ -2,7 +2,7 @@
 rng(77,'twister'); % stałe ziarno generatora liczb losowych
 Tp = 0.001;
 N=2000;
-Mw = round(N/6);  % Mw=400 próbek
+Mw = round(N/10);  % Mw=400 próbek
 N = 2*Mw+1;
 tau = (-Mw) : Mw;
 n = 0:N-1;
@@ -46,7 +46,7 @@ w_h = zeros(N, 1);
 for i = 1 : 2*Mw+1
     %tau_i = i - Mw;
     %if abs(tau_i) <= Mw
-    w_h(i) = 0.5 * (1 + cos(pi*i/Mw)); %tau_i/Mw));  % długość 2*Mw+1
+    w_h(i) = 0.5 * (1 + cos(pi*i*Tp/Mw)); %tau_i/Mw));  % długość 2*Mw+1
     %end
 end
 
@@ -63,36 +63,36 @@ figure;
 fs = 1/Tp;
 f = (0:N-1)*(fs/N);
 
-% Plot PHI_s_xx_h (rectangular vs Hanning)
+% stem PHI_s_xx_h (rectangular vs Hanning)
 subplot(3,2,1);
-plot(f, abs(PHI_s_xx_p), 'b-');
-xlim([0 fs/2]); title('PHI\_s\_xx (rectangular)');
+stem(f, abs(PHI_s_xx_p), 'b-');
+xlim([0 50]); title('PHI\_s\_xx (rectangular)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,xx}(f)'); grid on;
 
 subplot(3,2,2);
-plot(f, abs(PHI_s_xx_h), 'r-');
-xlim([0 fs/2]); title('PHI\_s\_xx (Hanning)');
+stem(f, abs(PHI_s_xx_h), 'r-');
+xlim([0 50]); title('PHI\_s\_xx (Hanning)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,xx}(f)'); grid on;
 
-% Plot PHI_s_ee_h (rectangular vs Hanning)
+% stem PHI_s_ee_h (rectangular vs Hanning)
 subplot(3,2,3);
-plot(f, abs(PHI_s_ee_p), 'b-');
+stem(f, abs(PHI_s_ee_p), 'b-');
 xlim([0 fs/2]); title('PHI\_s\_ee (rectangular)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,ee}(f)'); grid on;
 
 subplot(3,2,4);
-plot(f, abs(PHI_s_ee_h), 'r-');
+stem(f, abs(PHI_s_ee_h), 'r-');
 xlim([0 fs/2]); title('PHI\_s\_ee (Hanning)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,ee}(f)'); grid on;
 
-% Plot PHI_s_vv_h (rectangular vs Hanning)
+% stem PHI_s_vv_h (rectangular vs Hanning)
 subplot(3,2,5);
-plot(f, abs(PHI_s_vv_p), 'b-');
+stem(f, abs(PHI_s_vv_p), 'b-');
 xlim([0 fs/2]); title('PHI\_s\_vv (rectangular)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,vv}(f)'); grid on;
 
 subplot(3,2,6);
-plot(f, abs(PHI_s_vv_h), 'r-');
+stem(f, abs(PHI_s_vv_h), 'r-');
 xlim([0 fs/2]); title('PHI\_s\_vv (Hanning)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,vv}(f)'); grid on;
 
