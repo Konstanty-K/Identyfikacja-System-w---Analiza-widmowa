@@ -18,14 +18,25 @@ r_vv = xcorr(v, Mw, 'biased');          % r_vv(τ), dł. 2*Mw+1
 w = 0.5*(1 + cos(pi*tau/Mw));           % okno Hanninga (18): 1+cos !
 Phi_k = Tp * abs(fft(r_vv.*w, N));      % DFT sumy z wzoru (16)
 
+% 2. Korelogram (16) - z oknem prostokątnym
+Mw = round(N/5);
+tau = -Mw:Mw;                           % wektor przesunięć τ
+r_vv = xcorr(v, Mw, 'biased');          % r_vv(τ), dł. 2*Mw+1
+w_p = 1;           % 
+Phi_k_p = Tp * abs(fft(r_vv.*w_p, N));      % DFT sumy z wzoru (16)
+
 figure;
-subplot(2,1,1);
+subplot(3,1,1);
 plot(f, Phi_p(1:N/2),'b-','LineWidth',1.5);
 title('Periodogram (14)');
 xlabel('f [Hz]'); ylabel('\Phi_{vv}'); grid on; xlim([0 250]);
 
-subplot(2,1,2);
+subplot(3,1,2);
 plot(f, Phi_k(1:N/2),'r-','LineWidth',1.5);
 title('Korelogram (16)');
 xlabel('f [Hz]'); ylabel('\Phi_{vv}'); grid on; xlim([0 250]);
 
+subplot(3,1,3);
+plot(f, Phi_k_p(1:N/2),'r-','LineWidth',1.5);
+title('Korelogram protokat (16)');
+xlabel('f [Hz]'); ylabel('\Phi_{vv}'); grid on; xlim([0 250]);
