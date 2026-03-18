@@ -12,8 +12,7 @@ v = lsim(H, e, n*Tp);
 
 figure; 
 subplot(3,1,1)
-plot(n*Tp, [x(:)]);  % Transpozycja (:) na kolumny  Nx3
-
+plot(n*Tp, [x(:)]); 
 subplot(3,1,2)
 plot(n*Tp, [e(:)]); 
 

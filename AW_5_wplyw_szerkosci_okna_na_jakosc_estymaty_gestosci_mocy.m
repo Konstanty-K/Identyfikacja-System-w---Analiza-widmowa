@@ -1,4 +1,5 @@
 %% Sekcja 5: Metoda korelogramowa (okno Hanninga, Mw=N/5)
+rng(77,'twister'); % stałe ziarno generatora liczb losowych
 Tp = 0.001;
 N=2000;
 Mw = round(N/6);  % Mw=400 próbek
@@ -10,14 +11,7 @@ x = sin(2*pi*5*n*Tp) + 0.5*sin(2*pi*10*n*Tp) + 0.25*sin(2*pi*30*n*Tp);
 e = sigma * randn(1,N);
 H = tf([0.1], [1, -0.9], Tp);
 v = lsim(H, e, n*Tp)';
-
-
-
 % DLA porównania z mniejszym okneml modyfikujemy Mw
-
-rng(77,'twister'); % stałe ziarno generatora liczb losowych
-
-
 
 x_DFT = Tp * fft(x);
 e_DFT = Tp * fft(e);
@@ -34,13 +28,12 @@ for i = 1 : 2*Mw+1
 end
 %w_p = ones(size(tau)); 
 
-% compute autocorrelation of x (biased estimate) up to lag Mw
+% autocorrelation 
 rxx = xcorr(x, x, Mw, 'biased');  % długość 2*Mw+1, odpowiada indeksom -Mw: Mw
 ree = xcorr(e, e, Mw, 'biased');
 rvv = xcorr(v, v, Mw, 'biased');
-% ensure w_h (Hanning) used below aligns with rxx length
-% form vector for summation: w_h is defined later, but here prepare rxx for use
-corr_x = rxx;  % name used in the surrounding expression
+
+corr_x = rxx;  
 corr_e = ree; 
 corr_v = rvv; 
 
@@ -64,7 +57,6 @@ PHI_s_vv_h = Tp * sum(w_h .* corr_v .* v_DFT); % szum kolorowy
 k = -Mw:Mw;  % przesunizenia τ
 lags = k;
 
-% Prepare figure: 3 rows x 2 cols. Left column: PSD from rectangular window, right: PSD from Hanning
 figure;
 
 % Convert DFT frequency bins to Hz
@@ -105,24 +97,3 @@ xlim([0 fs/2]); title('PHI\_s\_vv (Hanning)');
 xlabel('Frequency (Hz)'); ylabel('\Phi_{s,vv}(f)'); grid on;
 
 sgtitle('Porównanie PSD: prostokątne (niebieski) vs Hanning (czerwony)');
-
-%%
-% %% Estymatorem gęstości widmowej mocy o mniejszej wariancji jest estymator wyznaczany metodą korelogramową (pośrednią) w użyciem tzw. okna przesunięciowego.
-% % PSD szumu białego e(nTp) - N=2000, σ=0.8
-% Tp=0.001; N=2000; n=0:N-1;
-% sigma=0.8; e=sigma*randn(1,N);
-% 
-% % Periodogram (14)
-% Ek=Tp*fft(e); Phi_p=(Tp/N)*abs(Ek).^2;
-% 
-% % Korelogram (16) - okno Hanning Mw=N/5
-% Mw=round(N/5); r=xcorr(e,Mw,'biased'); 
-% w=0.5*(1-cos(2*pi*(0:Mw)'/(2*Mw))); w=[w(end:-1:2);w];
-% Phi_k=Tp*real(ifft(fft(r.*w(1:length(r)),length(r)))); Phi_k=Phi_k(1:N);
-% 
-% f=(0:N/2-1)*(1/Tp)/N;  % Hz
-% figure;
-% semilogy(f,Phi_p(1:N/2),'b-',f,Phi_k(1:N/2),'r--'); 
-% hold on; yline(sigma^2,'g:','σ²=0.64');
-% title('Periodogram (niebieski) vs Korelogram (czerwony)'); 
-% xlim([0 250]); legend; grid on;

@@ -1,12 +1,12 @@
 %% Sekcja 2: Widmo amplitudowe |X(k)|
 
-Fs = 1/Tp;              % czestotliwosc probkowaia
-Xk = fft(x);            % ffT
+Fs = 1/Tp;              
+Xk = fft(x);            
 
 f = (0:N/2-1)*(Fs/N);   
 
 A = abs(Xk)/N;          
-A = A(1:N/2);           % widmo jednostrone
+A = A(1:N/2);           
 A(2:end) = 2*A(2:end);  
 
 figure;
